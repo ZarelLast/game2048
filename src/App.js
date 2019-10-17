@@ -7,7 +7,45 @@ class App extends React.Component {
     Score: 0,
     BestScore: 0,
     array: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    status: " "
+    status: " ",
+    colorsAndSizes: {
+      "2": {
+        size: 52,
+        color: "#000000"
+      },
+      "4": {
+        size: 52,
+        color: "#000000"
+      },
+      "8": {
+        size: 52,
+        color: "#000000"
+      },
+      "16": {
+        size: 52,
+        color: "#000000"
+      },
+      "32": {
+        size: 52,
+        color: "#000000"
+      },
+      "64": {
+        size: 52,
+        color: "#000000"
+      },
+      "128": {
+        size: 48,
+        color: "#000000"
+      },
+      "256": {
+        size: 48,
+        color: "#000000"
+      },
+      "512": {
+        size: 40,
+        color: "#000000"
+      },
+    }
   };
 
   componentDidMount = () => {
@@ -20,7 +58,6 @@ class App extends React.Component {
   };
 
   isGameOver = () => {
-    let gameover = true;
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
         if (this.state.array[i][j] == 0) {
@@ -36,7 +73,21 @@ class App extends React.Component {
     }
     return true;
   };
+
+  isGameWon = () => {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (this.state.array[i][j] == 512) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   setup = event => {
+    var BestScore = localStorage.getItem('Best Score');
+    this.setState({ BestScore: BestScore });
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     this.drawCanvas(canvas);
@@ -45,9 +96,17 @@ class App extends React.Component {
     this.updateCanvas(ctx, this.state.array);
 
     let gameover = this.isGameOver();
-      if (gameover) {
-        console.log("Game Over");
-      }
+    if (gameover) {
+      this.setState({
+        status: "GAME OVER"
+      });
+    }
+    let gamewon = this.isGameWon();
+    if (gamewon) {
+      this.setState({
+        status: "You Won !"
+      });
+    }
   };
 
   drawCanvas = canvas => {
@@ -72,9 +131,12 @@ class App extends React.Component {
         ctx.closePath();
         let val = grid[i][j];
         if (grid[i][j] !== 0) {
+          let s = "" + val;
+          let len = s.length - 1;
+          let sizes = [52, 52, 48, 40];
           ctx.textAlign = "center";
           ctx.fillStyle = "#000";
-          ctx.font = "50px Comic Sans MS";
+          ctx.font = sizes[len] + "px Comic Sans MS";
           ctx.fillText(val, i * w + w / 2, (j + 1) * w - w / 3);
         }
       }
@@ -205,15 +267,22 @@ class App extends React.Component {
       if (changed) {
         this.addNumber(this.state.array);
       }
-      
+
       this.updateCanvas(ctx, this.state.array);
-      
+
       let gameover = this.isGameOver();
       if (gameover) {
         this.setState({
           status: "GAME OVER"
         });
       }
+      let gamewon = this.isGameWon();
+      if (gamewon) {
+        this.setState({
+          status: "You Won !"
+        });
+      }
+      this.saveData();
     }
   };
 
@@ -224,12 +293,12 @@ class App extends React.Component {
     return row;
   };
 
-  saveData = e => {
-    e.preventDefault();
-    var score = parseInt(e.target.value);
-    this.setState({ Score: score });
+  saveData = () => {
+    var score = parseInt(this.state.Score);
     localStorage.setItem("Score", score);
-    if (score >= this.state.BestScore) {
+    var BestScore = localStorage.getItem('Best Score');
+    this.setState({ Score: score, BestScore: BestScore });
+    if (score > BestScore) {
       this.setState({ BestScore: score });
       localStorage.setItem("Best Score", score);
     }
@@ -247,9 +316,10 @@ class App extends React.Component {
             <h1>{this.state.BestScore}</h1>
           </div>
         </div>
-        <button onClick={this.keyPressed}>coba</button>
         <canvas id="myCanvas"></canvas>
-        <h1>{this.state.status}</h1>
+        <div className="GameOver">
+          <h1 className="over-title">{this.state.status}</h1>
+        </div>
       </div>
     );
   }

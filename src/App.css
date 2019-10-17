@@ -11,6 +11,18 @@ h1, h2, h3, h4, h5 {
   display: flex;
 }
 
+.GameOver {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.1);
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.GameOver .over-title {
+  margin: 50vh 50vw;
+}
 
 .App-logo {
   height: 40vmin;
