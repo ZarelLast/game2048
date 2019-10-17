@@ -2,26 +2,33 @@
   text-align: center;
 }
 
+#myCanvas {
+  border: 10px solid #e0e0e0;
+}
+
+.Container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}
+
 h1, h2, h3, h4, h5 {
-  margin: 0 0 0 100px;
+  margin: 0;
   padding: 0;
 }
 
 .row {
   display: flex;
+  justify-content: space-between;
 }
 
 .GameOver {
   position: absolute;
   background: rgba(0, 0, 0, 0.1);
-  right: 0;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
-.GameOver .over-title {
-  margin: 50vh 50vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .App-logo {
