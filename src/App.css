@@ -2,6 +2,18 @@
   text-align: center;
 }
 
+button {
+  background-color: #0069d9;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+}
+
+button:hover {
+  background-color: #007bff;
+}
+
 #myCanvas {
   border: 10px solid #e0e0e0;
 }

@@ -63,13 +63,13 @@ class App extends React.Component {
     event.preventDefault();
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
-    
+
     this.setState(
       {
         array: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
         new_array: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
         Score: 0,
-        status: ''
+        status: ""
       },
       () => {
         this.updateCanvas(ctx, this.state.array, this.state.new_array);
@@ -210,15 +210,18 @@ class App extends React.Component {
           Score: this.state.Score + row[i]
         });
         if (row[i] != 0) {
-          this.setState({
-            point: " + " + row[i]
-          }, ()=> {
-            setTimeout(()=>{
-              this.setState({
-                point: ""
-              })
-            },200);
-          });
+          this.setState(
+            {
+              point: " + " + row[i]
+            },
+            () => {
+              setTimeout(() => {
+                this.setState({
+                  point: ""
+                });
+              }, 200);
+            }
+          );
         }
         row[i - 1] = 0;
       }
@@ -323,6 +326,7 @@ class App extends React.Component {
           status: "You Won !"
         });
       }
+
       this.saveData();
     }
   };
